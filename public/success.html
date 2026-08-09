@@ -1,43 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Confirming payment…</title>
-<style>
-  body{
-    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
-    background:#0d0b12; color:#f2eefb; font-family:'Segoe UI', ui-sans-serif, system-ui, sans-serif;
-    text-align:center; padding:24px;
-  }
-  .spinner{
-    width:34px; height:34px; border-radius:50%;
-    border:3px solid #2a2438; border-top-color:#9c7bf0;
-    animation:spin 0.8s linear infinite; margin:0 auto 18px;
-  }
-  @keyframes spin{ to{ transform:rotate(360deg);} }
-  p{ color:#a89fc2; font-size:14px; }
-</style>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Confirming payment…</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #0d0b12;
+      color: #f2eefb;
+
+      font-family:
+        "Segoe UI",
+        ui-sans-serif,
+        system-ui,
+        sans-serif;
+
+      text-align: center;
+      padding: 24px;
+    }
+
+    .spinner {
+      width: 34px;
+      height: 34px;
+
+      border-radius: 50%;
+
+      border: 3px solid #2a2438;
+      border-top-color: #9c7bf0;
+
+      animation: spin 0.8s linear infinite;
+
+      margin: 0 auto 18px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    p {
+      color: #a89fc2;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  </style>
 </head>
+
 <body>
+
   <div>
+
     <div class="spinner"></div>
-    <p>Confirming your payment…<br>you'll be taken to the Telegram group automatically.</p>
+
+    <p>
+      Confirming your payment…<br>
+      You'll be taken to the Telegram group automatically.
+    </p>
+
   </div>
 
   <script>
-    // Read order_id Cashfree appended to the return URL, then ask our own
-    // backend to verify it server-side. The backend (api/verify-payment.js)
-    // issues the actual redirect into Telegram once it confirms PAID status
-    // directly with Cashfree — this page never sees or stores the link.
-    const params = new URLSearchParams(window.location.search);
-    const orderId = params.get('order_id');
+    const params =
+      new URLSearchParams(window.location.search);
+
+    const orderId =
+      params.get("order_id");
 
     if (orderId) {
-      window.location.href = '/api/verify-payment?order_id=' + encodeURIComponent(orderId);
+
+      window.location.href =
+        "/api/verify-order?order_id=" +
+        encodeURIComponent(orderId);
+
     } else {
-      window.location.href = '/index.html?payment=error';
+
+      window.location.href =
+        "/index.html?payment=error";
+
     }
   </script>
+
 </body>
+
 </html>
