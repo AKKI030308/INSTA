@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   const { amount } = req.body || {};
-  const EXPECTED_AMOUNT = 499;
+  const EXPECTED_AMOUNT = 1;
 
   if (Number(amount) !== EXPECTED_AMOUNT) {
     return res.status(400).json({ error: "Invalid amount" });
