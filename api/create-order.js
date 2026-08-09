@@ -2,14 +2,20 @@
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({
+      error: "Method not allowed"
+    });
   }
 
   const { amount } = req.body || {};
+
+  // TEST PRICE
   const EXPECTED_AMOUNT = 4;
 
   if (Number(amount) !== EXPECTED_AMOUNT) {
-    return res.status(400).json({ error: "Invalid amount" });
+    return res.status(400).json({
+      error: "Invalid amount"
+    });
   }
 
   const appId = process.env.CASHFREE_APP_ID;
@@ -40,6 +46,7 @@ export default async function handler(req, res) {
 
       headers: {
         "Content-Type": "application/json",
+        "Accept": "application/json",
         "x-api-version": "2023-08-01",
         "x-client-id": appId,
         "x-client-secret": secretKey
@@ -65,16 +72,19 @@ export default async function handler(req, res) {
     const data = await cfRes.json();
 
     if (!cfRes.ok) {
+      console.error("Cashfree Error:", data);
+
       return res.status(500).json({
         error:
           data.message ||
+          data.error ||
           "Cashfree order creation failed"
       });
     }
 
     return res.status(200).json({
       paymentSessionId: data.payment_session_id,
-      orderId,
+      orderId: orderId,
       mode:
         env === "production"
           ? "production"
@@ -82,7 +92,7 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("Server Error:", err);
 
     return res.status(500).json({
       error: "Could not reach Cashfree"
